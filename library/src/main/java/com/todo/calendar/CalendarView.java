@@ -524,9 +524,9 @@ public class CalendarView extends LinearLayout {
 
     public interface CalendarListener {
 
-        void onDayClick(Date date);
+        Date onDayClick(Date date);
 
-        void onDayLongClick(Date date);
+        Date onDayLongClick(Date date);
 
         void onRightButtonClick();
 

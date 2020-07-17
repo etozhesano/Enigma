@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Enigma</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="task_to_be_done">Task to be done</string>
+    <string name="enter_task_here">Enter task here..</string>
+    <string name="due_date">Due date</string>
+    <string name="date_not_set">Date not set</string>
+    <string name="time_not_set">Time not set</string>
+    <string name="enter_priority">Enter priority</string>
+    <string name="click_to_set_date">Click to set date</string>
+    <string name="click_to_set_time">Click to set time</string>
+    <string name="cancel_date">cancel date</string>
+    <string name="cancel_time">cancel time</string>
+    <string name="search_task">Search task</string>
+    <string name="save_item">Save</string>
+    <string name="share_item">Share</string>
+    <string name="mic_image">Talk to add task</string>
+    <string name="priority_prompt">Priority</string>
 </resources>
