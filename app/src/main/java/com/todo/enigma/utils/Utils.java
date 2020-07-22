@@ -1,14 +1,10 @@
 package com.todo.enigma.utils;
 
-import com.todo.calendar.CalendarView;
-import com.todo.enigma.MainActivity;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 
 public class Utils {
     public static Date getDateFromString(String date) {
@@ -37,15 +33,17 @@ public class Utils {
         String strDate = "";
         if(date != null) {
      //       Calendar calendar = calendarCurrent.getInstance();
-            Calendar currentCalendar = Calendar.getInstance();
+            Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+            calendar.setTime(date);
+         //   Calendar calendar = Calendar.getInstance();
+          //  CalendarView.currentCalendar.getTime();
 
-            currentCalendar.setTime(date);
-            int month = currentCalendar.get(Calendar.MONTH) + 1;
+            int month = calendar.get(Calendar.MONTH) + 1;
             strDate += month;
             strDate += "/";
-            strDate += currentCalendar.get(Calendar.DATE);
+            strDate += calendar.get(Calendar.DATE);
             strDate += "/";
-            strDate += currentCalendar.get(Calendar.YEAR);
+            strDate += calendar.get(Calendar.YEAR);
         }
 
         return strDate;

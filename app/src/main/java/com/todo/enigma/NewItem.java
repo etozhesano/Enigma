@@ -1,7 +1,5 @@
 package com.todo.enigma;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -25,45 +22,69 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.todo.enigma.models.Priority;
-import com.todo.enigma.utils.Utils;
-import com.todo.calendar.CalendarView;
-import java.util.Calendar;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.todo.enigma.models.Priority.values;
+import static com.todo.calendar.CalendarView.currentCalendar;
+import static com.todo.calendar.CalendarView.lastSelectedDayCalendar;
 
 public class NewItem extends AppCompatActivity implements View.OnClickListener,
-        TimePickerDialog.OnTimeSetListener,
-        DatePickerDialog.OnDateSetListener {
+        TimePickerDialog.OnTimeSetListener {
+    // DatePickerDialog.OnDateSetListener {
     private EditText etNewTask;
     private EditText timeTextView;
     private EditText dateTextView;
     private Spinner spinner;
 
     int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_new_item);
-        ActionBar actionBar =getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Priority.values()));
-        etNewTask = (EditText)findViewById(R.id.etNewTask);
-        timeTextView = (EditText)findViewById(R.id.etDisplayTime);
-        dateTextView = (EditText)findViewById(R.id.etDisplayDate);
-        ImageView timeButton = (ImageView)findViewById(R.id.imgTime);
-        ImageView dateButton = (ImageView)findViewById(R.id.imgDate);
+        etNewTask = (EditText) findViewById(R.id.etNewTask);
+        timeTextView = (EditText) findViewById(R.id.etDisplayTime);
+        dateTextView = (EditText) findViewById(R.id.etDisplayDate);
+        ImageView timeButton = (ImageView) findViewById(R.id.imgTime);
+        ImageView dateButton = (ImageView) findViewById(R.id.imgDate);
         Date date = (Date) getIntent().getSerializableExtra("date");
         String time = getIntent().getStringExtra("time");
 
+if (lastSelectedDayCalendar == null) {
+    Date testDate = currentCalendar.getTime();
 
-        if(!TextUtils.isEmpty(Utils.getStringFromDate(date))) {
-            dateTextView.setText(Utils.getStringFromDate(date));
+    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+    String reportDate = format.format(testDate);
+    dateTextView.setText(reportDate);
+}
+else {
+    Date topDate = lastSelectedDayCalendar.getTime();
+    SimpleDateFormat form = new SimpleDateFormat("dd.MM.yyyy");
+    String lastDay = form.format(topDate);
+    dateTextView.setText(lastDay);
+}
+
+
+
+
+
+
+
         }
-    }
+       /* if (dateTextView.getText().length() == 0) {
+            Date defaultDay = currentCalendar.getTime();
+            SimpleDateFormat formatDefaultDay = new SimpleDateFormat("dd.MM.yyyy");
+            String DefaultDayStr = formatDefaultDay.format(defaultDay);
+        } */
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,12 +105,11 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
     }
 
 
-
     public void onAddNewSaveClick(MenuItem item) {
-        if(TextUtils.isEmpty(etNewTask.getText().toString().trim())) {
+        if (TextUtils.isEmpty(etNewTask.getText().toString().trim())) {
             Toast.makeText(NewItem.this, "Task cannot be empty", Toast.LENGTH_SHORT).show();
         } else {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(etNewTask.getWindowToken(), 0);
             Intent data = new Intent();
             data.putExtra("subject", etNewTask.getText().toString());
@@ -103,17 +123,18 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
             this.finish();
         }
     }
-  /*  public void onDateSet(View view) {
-        Calendar now = Calendar.getInstance();
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                NewItem.this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-        );
-        dpd.show(getFragmentManager(), "Datepickerdialog");
-    }
- */
+
+    /*  public void onDateSet(View view) {
+          Calendar now = Calendar.getInstance();
+          DatePickerDialog dpd = DatePickerDialog.newInstance(
+                  NewItem.this,
+                  now.get(Calendar.YEAR),
+                  now.get(Calendar.MONTH),
+                  now.get(Calendar.DAY_OF_MONTH)
+          );
+          dpd.show(getFragmentManager(), "Datepickerdialog");
+      }
+   */
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
@@ -123,15 +144,16 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
 
     }
+
     public void onShareClick(MenuItem view) {
-        if(!TextUtils.isEmpty(etNewTask.getText().toString())) {
+        if (!TextUtils.isEmpty(etNewTask.getText().toString())) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             String shareBody = "";
             shareBody += etNewTask.getText().toString();
-            if(!TextUtils.isEmpty(dateTextView.getText().toString())) {
+            if (!TextUtils.isEmpty(dateTextView.getText().toString())) {
                 shareBody += " by " + dateTextView.getText().toString();
-                if(!TextUtils.isEmpty(timeTextView.getText().toString())) {
+                if (!TextUtils.isEmpty(timeTextView.getText().toString())) {
                     shareBody += " " + timeTextView.getText().toString();
                 }
             }
@@ -140,6 +162,7 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -150,9 +173,9 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(View view) {
+        Intent in = new Intent(this, MainActivity.class);
+        startActivity(in);
     }
-}
 
+}

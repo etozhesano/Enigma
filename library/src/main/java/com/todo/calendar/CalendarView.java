@@ -57,9 +57,9 @@ public class CalendarView extends LinearLayout {
     private ViewGroup CalendarMonthLayout;
     private CalendarListener calendarListener;
     @NonNull
-    private Calendar currentCalendar = Calendar.getInstance();
+    public static Calendar currentCalendar = Calendar.getInstance();
     @Nullable
-    private Calendar lastSelectedDayCalendar;
+    public static Calendar lastSelectedDayCalendar;
     private final OnClickListener onDayOfMonthClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -75,6 +75,7 @@ public class CalendarView extends LinearLayout {
             calendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR));
             calendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH));
             calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dayOfTheMonthText.getText().toString()));
+
 
             markDayAsSelectedDay(calendar.getTime());
 

@@ -1,4 +1,3 @@
-
 package com.todo.enigma;
 
 import android.content.Context;
@@ -72,13 +71,13 @@ public class MainActivity extends AppCompatActivity implements CalendarListener,
         //  Button markDayButton = findViewById(com.todo.enigma.R.id.markDayButton);
         // Button clearSelectedDayButton = findViewById(com.todo.enigma.R.id.clearSelectedDayButton);
 
+
       /*  markDayButton.setOnClickListener(view -> {
             Calendar calendar = Calendar.getInstance();
             Random random = new Random(System.currentTimeMillis());
             int style = random.nextInt(2);
             int daySelected = random.nextInt(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
             calendar.set(Calendar.DAY_OF_MONTH, daySelected);
-
             switch (style) {
                 case 0:
                     CalendarView.markCircleImage1(calendar.getTime());
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements CalendarListener,
                     break;
             }
         });
-
         clearSelectedDayButton.setOnClickListener(v -> CalendarView.clearSelectedDay());
 */
         // Set listener, in this case, the same activity
@@ -185,4 +183,4 @@ public class MainActivity extends AppCompatActivity implements CalendarListener,
             DBUtils.writeOne(newItem);
         }
     }
-    }
+}
