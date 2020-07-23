@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -18,9 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.todo.enigma.adapter.TimePickerFragment;
 import com.todo.enigma.models.Priority;
 
 import java.text.SimpleDateFormat;
@@ -51,8 +54,25 @@ public class NewItem extends AppCompatActivity implements View.OnClickListener,
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Priority.values()));
         etNewTask = (EditText) findViewById(R.id.etNewTask);
         timeTextView = (EditText) findViewById(R.id.etDisplayTime);
+
+        timeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "time picker");
+
+            }
+        });
         dateTextView = (EditText) findViewById(R.id.etDisplayDate);
         ImageView timeButton = (ImageView) findViewById(R.id.imgTime);
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.show(getSupportFragmentManager(), "time picker");
+            }
+        });
         ImageView dateButton = (ImageView) findViewById(R.id.imgDate);
         Date date = (Date) getIntent().getSerializableExtra("date");
         String time = getIntent().getStringExtra("time");
@@ -70,19 +90,7 @@ else {
     String lastDay = form.format(topDate);
     dateTextView.setText(lastDay);
 }
-
-
-
-
-
-
-
-        }
-       /* if (dateTextView.getText().length() == 0) {
-            Date defaultDay = currentCalendar.getTime();
-            SimpleDateFormat formatDefaultDay = new SimpleDateFormat("dd.MM.yyyy");
-            String DefaultDayStr = formatDefaultDay.format(defaultDay);
-        } */
+    }
 
 
 
@@ -135,15 +143,20 @@ else {
           dpd.show(getFragmentManager(), "Datepickerdialog");
       }
    */
+
+
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+        TextView textView = (TextView) findViewById(R.id.etDisplayTime);
+        textView.setText(hourOfDay +":" + minute);
     }
 
-    @Override
-    public void onClick(View v) {
 
+
+    public void clearTime(View view) {
+        timeTextView.setText("");
     }
+
 
     public void onShareClick(MenuItem view) {
         if (!TextUtils.isEmpty(etNewTask.getText().toString())) {
@@ -173,9 +186,19 @@ else {
                 return super.onOptionsItemSelected(item);
         }
     }
-    public void onDateSet(View view) {
+    public void backToDate(View view) {
         Intent in = new Intent(this, MainActivity.class);
         startActivity(in);
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+   /* @Override
+    public void onClick(View v) {
+        DialogFragment timePicker = new TimePickerFragment();
+        timePicker.show(getSupportFragmentManager(), "time picker");
+    } */
 }
